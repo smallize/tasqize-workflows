@@ -1,0 +1,31 @@
+name: about.tasqize.com
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout theme repo
+      uses: actions/checkout@v4
+      with:
+          repository: smallize/tasqize
+          token: ${{ secrets.REPO_TOKEN }}
+          fetch-depth: 0 
+          submodules: true
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+          hugo-version: '0.135.0'
+          extended: true
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - name: Build 
+      run: hugo --config "configs/about.tasqize.com.toml","configs/common.tasqize.com.toml" -b "https://about.tasqize.com" --cleanDestinationDir --minify --templateMetrics --templateMetricsHints --enableGitInfo
+    - name: Deploy to S3
+      run: |
+        aws s3 sync public/ s3://about.tasqize.com/ --delete
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS }}
