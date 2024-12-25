@@ -67,7 +67,7 @@ jobs:
       if: ${{ github.event.inputs.environment == 'production' }}
       run: |
         aws cloudfront create-invalidation \
-          --distribution-id "ESPS71JO94DKY" \
+          --distribution-id "E22S1461NWKX4Z" \
           --paths "/*"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
