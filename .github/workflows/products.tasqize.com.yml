@@ -32,7 +32,7 @@ jobs:
           echo "::set-output name=url::https://products-qa.tasqize.com"
         fi
     - name: Build 
-      run: hugo --config "configs/products.tasqize.com.toml","configs/common.tasqize.com.toml" -b "${{ steps.base-url.outputs.url }}" --cleanDestinationDir --minify --templateMetrics --templateMetricsHints --enableGitInfo
+      run: hugo --config "configs/products.tasqize.com.toml","configs/common.tasqize.com.toml" -b "${{ steps.base-url.outputs.url }}" --cleanDestinationDir --minify --templateMetrics --templateMetricsHints --enableGitInfo --debug
     - name: Deploy to S3
       run: |
         aws s3 sync public/ s3://products.tasqize.com/ --delete
