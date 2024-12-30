@@ -33,9 +33,8 @@ jobs:
         fi
     - name: Build 
       run: hugo --config "configs/docs.tasqize.com.toml","configs/common.tasqize.com.toml" -b "${{ steps.base-url.outputs.url }}" --cleanDestinationDir --minify --templateMetrics --templateMetricsHints --enableGitInfo
-    - name: Deploy to S3
-      run: |
-        aws s3 sync public/ s3://docs.tasqize.com/ --delete
+    - name: Deploy
+      run: hugo deploy --config "configs/docs.tasqize.com.toml" --maxDeletes=-1 --target "${{ github.event.inputs.environment }}" --invalidateCDN --force
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS }}
